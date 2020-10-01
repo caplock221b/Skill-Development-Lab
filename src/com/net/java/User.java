@@ -10,14 +10,16 @@ import java.util.Iterator;
 public class User {
 	private String username;
 	private String email;
+	private String password;
 	private List<TaskList> arr;
 	private HashSet<String> hs;
 	
 	private static Scanner sc = new Scanner(System.in);
 	
-	public User(String name, String email) {
+	public User(String name, String email, String password) {
 		this.username = name;
 		this.email = email;
+		this.password = password;
 		this.arr = new ArrayList<TaskList>();
 		this.hs = new HashSet<String>();
 	}
@@ -28,6 +30,14 @@ public class User {
 
 	public String getEmail() {
 		return email;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public User getUser() {
+		return this;
 	}
 
 	public void getArr() {
