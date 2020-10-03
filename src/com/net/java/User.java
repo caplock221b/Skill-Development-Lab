@@ -9,9 +9,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 public class User implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String email;
@@ -60,7 +57,7 @@ public class User implements Serializable {
 				System.out.println("\tCreated at : " + tl.getDatetime());
 				System.out.println("\tTasks : ");
 				tl.getTasks();
-				System.out.println("\n");
+				System.out.println("");
 				ctr++;
 			}
 		}

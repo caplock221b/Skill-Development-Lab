@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-
 	private static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args)throws IOException, ClassNotFoundException {
@@ -18,11 +17,12 @@ public class Client {
 		
 		boolean registerSignupLoop = true;
 		String username, email, password;
+		System.out.println("------------Welcome to List-It App!------------");
 		registerLoginMenu();
 		while(registerSignupLoop) {
 			System.out.print("\nEnter your choice (Press '4' to show menu again) : ");
 			int ch = sc.nextInt();
-			toServer.write(ch);
+			toServer.writeObject(ch);
 			switch(ch) {
 				case 1:
 					System.out.print("Enter your username : ");
@@ -36,13 +36,14 @@ public class Client {
 					if(password.equals(p)) {
 						User user = new User(username, email, password);
 						toServer.writeObject(user);
+						System.out.println((String) fromServer.readObject());
 					}
 					else {
 						System.out.println("Passwords do not match. Try registering again!");
 					}
 					break;
 				case 2:
-					int storeLength = fromServer.read();
+					int storeLength = (int) fromServer.readObject();
 					if(storeLength > 0) {
 						System.out.print("Enter your username : ");
 						username = sc.next();
@@ -58,7 +59,7 @@ public class Client {
 							while(userLoop) {
 								System.out.print("\nEnter your choice (Press '5' to show menu again) : ");
 								int choice = sc.nextInt();
-								toServer.write(choice);
+								toServer.writeObject(choice);
 								switch(choice) {
 									case 1:
 										obj.addNewTaskList();
@@ -72,6 +73,7 @@ public class Client {
 									case 4:
 										System.out.println("We'll be waiting for you to come back! Bye!");
 										userLoop = false;
+										registerLoginMenu();
 										break;
 									case 5:
 										showMenu();
@@ -86,6 +88,7 @@ public class Client {
 					break;
 				case 3:
 					registerSignupLoop = false;
+					System.out.println("Goodbye! Have a nice day!");
 					break;
 				case 4:
 					registerLoginMenu();
@@ -109,5 +112,4 @@ public class Client {
 		System.out.println("3. Show all task lists");
 		System.out.println("4. Logout");
 	}
-	
 }

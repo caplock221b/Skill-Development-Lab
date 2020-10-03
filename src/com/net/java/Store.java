@@ -39,13 +39,13 @@ public class Store {
 		return -1;
 	}
 	
-	public void registerUser(User user) {
+	public boolean registerUser(User user) {
 		if(checkUser(user, 0) != -1) {
-			System.out.println("User with the given credentials is already registered. Try logging in.");
+			return false;
 		}
 		else {
 			store.add(user);
-			System.out.println("New user successfully registered. Log in to start the journey with us!");
+			return true;
 		}
 	}
 	
