@@ -1,20 +1,28 @@
 package com.net.java;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.Scanner;
 
-public class Main {
+public class Client {
 
 	private static Scanner sc = new Scanner(System.in);
-	private static Store store;
 	
-	public static void main(String[] args) {
-		store = new Store();
+	public static void main(String[] args)throws IOException, ClassNotFoundException {
+		Socket client = new Socket("localhost", 9999);
+		
+		ObjectOutputStream toServer = new ObjectOutputStream(client.getOutputStream());
+		ObjectInputStream fromServer = new ObjectInputStream(client.getInputStream());
+		
 		boolean registerSignupLoop = true;
 		String username, email, password;
 		registerLoginMenu();
 		while(registerSignupLoop) {
 			System.out.print("\nEnter your choice (Press '4' to show menu again) : ");
 			int ch = sc.nextInt();
+			toServer.writeObject(ch);
 			switch(ch) {
 				case 1:
 					System.out.print("Enter your username : ");
@@ -26,19 +34,23 @@ public class Main {
 					System.out.print("Please confirm your password : ");
 					String p = sc.next();
 					if(password.equals(p)) {
-						store.registerUser(username, email, password);
+						User user = new User(username, email, password);
+						toServer.writeObject(user);
 					}
 					else {
 						System.out.println("Passwords do not match. Try registering again!");
 					}
 					break;
 				case 2:
-					if(store.getStoreLength() > 0) {
+					int storeLength = fromServer.read();
+					if(storeLength > 0) {
 						System.out.print("Enter your username : ");
 						username = sc.next();
 						System.out.print("Enter your password : ");
 						password = sc.next();
-						User obj = store.loginUser(username, password);
+						User user = new User(username, "", password);
+						toServer.writeObject(user);
+						User obj = (User) fromServer.readObject();
 						if(obj != null) {
 							System.out.println("Welcome " + obj.getUsername() + "! What are you up to today?");
 							boolean userLoop = true;
@@ -46,6 +58,7 @@ public class Main {
 							while(userLoop) {
 								System.out.print("\nEnter your choice (Press '5' to show menu again) : ");
 								int choice = sc.nextInt();
+								toServer.write(choice);
 								switch(choice) {
 									case 1:
 										obj.addNewTaskList();
@@ -79,6 +92,7 @@ public class Main {
 					break;
 			}
 		}
+		client.close();
 	}
 	
 	private static void registerLoginMenu() {
