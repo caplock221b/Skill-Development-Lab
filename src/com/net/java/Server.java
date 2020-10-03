@@ -24,15 +24,19 @@ public class Server {
 		boolean registerSignupLoop = true;
 		
 		while(registerSignupLoop) {
-			int ch = (int) fromClient.readObject();
+			int ch = (int) fromClient.read();
 			System.out.println(ch);
 			switch(ch) {
 				case 1:
 					User user = (User) fromClient.readObject();
 					store.registerUser(user);
+					break;
 				case 2:
+					System.out.println("Entered case 2");
 					int storeLength = store.getStoreLength();
+					System.out.println("Store length : " + storeLength);
 					toClient.write(storeLength);
+					System.out.println("storeLength sent to client");
 					if(storeLength > 0) {
 						User u = (User) fromClient.readObject();
 						User obj = store.loginUser(u);

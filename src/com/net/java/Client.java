@@ -22,7 +22,7 @@ public class Client {
 		while(registerSignupLoop) {
 			System.out.print("\nEnter your choice (Press '4' to show menu again) : ");
 			int ch = sc.nextInt();
-			toServer.writeObject(ch);
+			toServer.write(ch);
 			switch(ch) {
 				case 1:
 					System.out.print("Enter your username : ");
