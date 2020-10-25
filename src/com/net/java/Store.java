@@ -64,7 +64,6 @@ public class Store {
 			} catch (SQLException e) {
 				System.out.println(e);
 			}
-//			store.add(user);
 			return true;
 		}
 	}
@@ -86,6 +85,5 @@ public class Store {
 			System.out.println(e);
 		}
 		return null;
-//		return store.get(result);
 	}
 }

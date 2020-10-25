@@ -28,7 +28,6 @@ public class Server {
 		Socket server = serverSocket.accept();
 		System.out.println("[SERVER] client connected...");
         
-        // Establish connection between Java and MySQL using JDBC Driver
 		try {
 			Connection connection = DriverManager.getConnection(url, username, password);
 			System.out.println("Connected to database...");
