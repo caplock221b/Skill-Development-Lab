@@ -110,7 +110,7 @@ public class Client{
 				}
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			System.out.println(e.toString());
 		}
 		client.close();
 	}
