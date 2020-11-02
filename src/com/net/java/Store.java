@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Store {	
+public class Store {
 	public int getStoreLength(Connection connection) {
 		int ctr = -1;
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM users");
 			ctr = 0;
-			while(rs.next()) {
+			while (rs.next()) {
 				ctr++;
 			}
 		} catch (SQLException e) {
@@ -21,28 +21,28 @@ public class Store {
 		}
 		return ctr;
 	}
-	
+
 	public int checkUser(Connection connection, User user, int caller) {
 		try {
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM users");
-			if(caller == 0) {
-				while(rs.next()) {
+			if (caller == 0) {
+				while (rs.next()) {
 					int id = rs.getInt("id");
 					String username = rs.getString("username");
 					String password = rs.getString("password");
 					String email = rs.getString("email");
-					if(username.equals(user.getUsername()) && password.equals(user.getPassword()) && email.equals(user.getEmail())) {
+					if (username.equals(user.getUsername()) && password.equals(user.getPassword())
+							&& email.equals(user.getEmail())) {
 						return id;
 					}
 				}
-			}
-			else {
-				while(rs.next()) {
+			} else {
+				while (rs.next()) {
 					int id = rs.getInt("id");
 					String username = rs.getString("username");
 					String password = rs.getString("password");
-					if(username.equals(user.getUsername()) && password.equals(user.getPassword())) {
+					if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
 						return id;
 					}
 				}
@@ -52,14 +52,15 @@ public class Store {
 		}
 		return -1;
 	}
-	
+
 	public boolean registerUser(Connection connection, User user) {
-		if(checkUser(connection, user, 0) != -1) {
+		if (checkUser(connection, user, 0) != -1) {
 			return false;
-		}
-		else {
+		} else {
 			try {
-				PreparedStatement prep = connection.prepareStatement("INSERT INTO users(username, password, email) VALUES ('"+ user.getUsername() +"','"+ user.getPassword() +"','"+ user.getEmail() +"');");
+				PreparedStatement prep = connection
+						.prepareStatement("INSERT INTO users(username, password, email) VALUES ('" + user.getUsername()
+								+ "','" + user.getPassword() + "','" + user.getEmail() + "');");
 				prep.executeUpdate();
 			} catch (SQLException e) {
 				System.out.println(e);
@@ -67,10 +68,10 @@ public class Store {
 			return true;
 		}
 	}
-	
+
 	public User loginUser(Connection connection, User user) {
 		int result = checkUser(connection, user, 1);
-		if(result == -1) {
+		if (result == -1) {
 			System.out.println("User not registered. Try registering the user first.");
 			return null;
 		}
